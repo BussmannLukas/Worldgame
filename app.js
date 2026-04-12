@@ -7,7 +7,7 @@ const gameState = {
   totalOnMap: 0, // countries that actually have SVG paths
   gameOver: false,
   timerRunning: false,
-  timerSeconds: 15 * 60, // 15 minutes
+  elapsedSeconds: 0, // stopwatch counts up
   timerInterval: null,
   startTime: null,
 };
@@ -58,7 +58,6 @@ function initGame() {
 
   // Set up timer controls
   document.getElementById('timer-toggle').addEventListener('click', toggleTimer);
-  document.getElementById('timer-reset').addEventListener('click', resetTimer);
 
   // Set up zoom
   document.getElementById('zoom-in').addEventListener('click', () => zoomMap(1.3));
@@ -218,12 +217,8 @@ function startTimer() {
   document.getElementById('timer-toggle').textContent = '⏸';
 
   gameState.timerInterval = setInterval(() => {
-    gameState.timerSeconds--;
+    gameState.elapsedSeconds++;
     updateTimerDisplay();
-
-    if (gameState.timerSeconds <= 0) {
-      handleTimeUp();
-    }
   }, 1000);
 }
 
@@ -242,29 +237,11 @@ function toggleTimer() {
   }
 }
 
-function resetTimer() {
-  stopTimer();
-  gameState.timerSeconds = 15 * 60;
-  updateTimerDisplay();
-}
-
 function updateTimerDisplay() {
-  const mins = Math.floor(gameState.timerSeconds / 60);
-  const secs = gameState.timerSeconds % 60;
+  const mins = Math.floor(gameState.elapsedSeconds / 60);
+  const secs = gameState.elapsedSeconds % 60;
   const display = document.getElementById('timer-display');
   display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-  display.classList.remove('warning', 'danger');
-  if (gameState.timerSeconds <= 60) {
-    display.classList.add('danger');
-  } else if (gameState.timerSeconds <= 180) {
-    display.classList.add('warning');
-  }
-}
-
-function handleTimeUp() {
-  stopTimer();
-  handleGiveUp();
 }
 
 // ═══════════════════════════════════════════
@@ -340,7 +317,7 @@ function handleRestart() {
   // Reset state
   gameState.foundCountries.clear();
   gameState.gameOver = false;
-  gameState.timerSeconds = 15 * 60;
+  gameState.elapsedSeconds = 0;
   gameState.startTime = null;
   stopTimer();
 

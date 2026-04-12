@@ -415,7 +415,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════
-   TIMER
+   TIMER (Stopwatch)
    ═══════════════════════════════════════════ */
 .timer-section {
   padding: 12px 20px;
@@ -425,26 +425,26 @@ body {
   justify-content: space-between;
 }
 
+.timer-label-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
 .timer-display {
   font-size: 22px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--text);
   letter-spacing: 0.02em;
-}
-
-.timer-display.warning {
-  color: var(--warning);
-}
-
-.timer-display.danger {
-  color: var(--error);
-  animation: pulse 1s ease infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
 }
 
 .timer-controls {
